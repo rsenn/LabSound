@@ -35,9 +35,38 @@ endif()
 
 set(CMAKE_CXX_STANDARD 14)
 
+include(ExternalProject)
+
+set(MODULE_COMPILE_FLAGS "-fPIC")
+
+
+ExternalProject_Add(
+  nyquist
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/libnyquist"
+  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/third_party/libnyquist"
+ # PREFIX libnyquist
+  CMAKE_ARGS
+    "-DLIBNYQUIST_BUILD_EXAMPLE:BOOL=OFF"
+    "-DBUILD_SHARED_LIBS:BOOL=OFF"
+    "-DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}"
+    "-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
+    "-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON"
+    "-DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}"
+    "-DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}"
+    "-DCMAKE_C_FLAGS:STRING=${CMAKE_C_FLAGS} ${MODULE_COMPILE_FLAGS}"
+    "-DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS} ${MODULE_COMPILE_FLAGS}"
+    "-D_LAB_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS} ${MODULE_COMPILE_FLAGS}"
+     INSTALL_COMMAND "" )
+
+add_library(libnyquist STATIC IMPORTED GLOBAL)
+set_property(TARGET libnyquist PROPERTY IMPORTED_LOCATION 
+    "${CMAKE_CURRENT_BINARY_DIR}/third_party/libnyquist/lib/liblibnyquist.a")
+
 # turn off building libnyquist samples
 set(LIBNYQUIST_BUILD_EXAMPLE OFF)
-add_subdirectory(third_party/libnyquist)
+#add_subdirectory(third_party/libnyquist)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third_party/libnyquist/include)
 
 include(cmake/LabSound.cmake)
 

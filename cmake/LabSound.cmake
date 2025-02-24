@@ -251,7 +251,8 @@ endif()
 
 target_link_libraries(LabSound
     ${LABSOUND_PLATFORM_LINK_LIBRARIES}
-    PRIVATE libnyquist::libnyquist
+    PRIVATE #libnyquist::libnyquist
+    libnyquist
 )
 
 configureProj(LabSound)

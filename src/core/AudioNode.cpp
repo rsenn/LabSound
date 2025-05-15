@@ -336,7 +336,7 @@ AudioNode::AudioNode(AudioContext & ac, AudioNodeDescriptor const & desc)
             ++i;
         }
     }
-    
+
     _self->m_channelCount = desc.initialChannelCount;
     if (_self->m_channelCount > 0) {
         addOutput(std::unique_ptr<AudioNodeOutput>(
@@ -495,7 +495,7 @@ void AudioNode::processIfNecessary(ContextRenderLock & r, int bufferSize)
     ProfileScope selfScope(_self->totalTime);
     _self->graphTime.zero();
 
-    if (isScheduledNode() && 
+    if (isScheduledNode() &&
         (_self->_scheduler._playbackState < SchedulingState::FADE_IN ||
          _self->_scheduler._playbackState == SchedulingState::FINISHED))
     {
@@ -672,7 +672,7 @@ void AudioNode::pullInputs(ContextRenderLock & r, int bufferSize)
 }
 
 bool AudioNode::inputsAreSilent(ContextRenderLock & r)
-{    
+{
     for (auto & in : _self->m_inputs)
     {
         if (!in->bus(r)->isSilent())

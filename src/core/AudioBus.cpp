@@ -805,7 +805,7 @@ std::unique_ptr<AudioBus> AudioBus::createByMixingToMono(const AudioBus * source
                 for (int j = 0; j < m; ++j)
                 {
                     const float * source = sourceBus->channel(j)->data();
-                    destination[j] += source[j];
+                    destination[i] += source[j];
                 }
 
                 destination[i] /= m;
